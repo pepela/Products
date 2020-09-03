@@ -9,5 +9,5 @@ import dagger.Module
 abstract class RepositoryModule {
 
     @Binds
-    abstract fun bindProductsRepository(productsRepository: RepositoryImpl): Repository
+    abstract fun bindRepository(repository: RepositoryImpl): Repository
 }

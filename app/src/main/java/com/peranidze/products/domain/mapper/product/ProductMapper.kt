@@ -7,7 +7,7 @@ import com.peranidze.products.local.db.entity.ProductEntity
 import com.peranidze.products.remote.model.ProductDto
 import javax.inject.Inject
 
-class ProductMapper @Inject constructor() : Mapper<ProductDto, ProductEntity, Product> {
+open class ProductMapper @Inject constructor() : Mapper<ProductDto, ProductEntity, Product> {
 
     override fun fromDtoToDomain(dto: ProductDto): Product =
         with(dto) {

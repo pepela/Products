@@ -8,7 +8,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CategoriesService @Inject constructor(retrofit: Retrofit) : CategoriesApi {
+open class CategoriesService @Inject constructor(retrofit: Retrofit) : CategoriesApi {
 
     private val categoriesApi by lazy { retrofit.create(CategoriesApi::class.java) }
 

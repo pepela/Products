@@ -22,7 +22,7 @@ class RepositoryImpl @Inject constructor(
     override fun getCategories(): Flowable<List<Category>> =
         categoriesService.categories()
             .map { categoryMapper.fromDtoListToDomainList(it) }
-            .doOnNext { saveProducts(it).subscribe() }
+            .doOnNext { saveProducts(it).onErrorComplete().subscribe() }
 
     override fun getProduct(productId: Long, categoryId: Long): Flowable<Product> =
         productsDao.get(productId, categoryId)

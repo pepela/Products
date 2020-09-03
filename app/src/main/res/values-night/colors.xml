@@ -6,7 +6,7 @@
     <color name="colorSecondary">#00403A</color>
     <color name="colorOnSecondary">#FFFFFF</color>
     <color name="colorBackground">#121212</color>
-    <color name="colorSurface">#151515</color>
+    <color name="colorSurface">#252525</color>
     <color name="colorOnSurface">#FFFFFF</color>
     <color name="colorError">#FF0000</color>
     <color name="colorOnError">#FFFFFF</color>

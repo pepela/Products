@@ -6,17 +6,17 @@ import com.peranidze.products.domain.model.Category
 import com.peranidze.products.remote.model.CategoryDto
 import javax.inject.Inject
 
-class CategoryMapper @Inject constructor(private val productMapper: ProductMapper) :
-    Mapper<CategoryDto, Nothing, Category> {
+open class CategoryMapper @Inject constructor(private val productMapper: ProductMapper) :
+    Mapper<CategoryDto, Unit, Category> {
 
     override fun fromDtoToDomain(dto: CategoryDto): Category =
         Category(dto.name, productMapper.fromDtoListToDomainList(dto.productDtoList))
 
-    override fun fromDomainToEntity(domain: Category): Nothing {
+    override fun fromDomainToEntity(domain: Category): Unit {
         throw IllegalArgumentException("Category has no entity class")
     }
 
-    override fun fromEntityToDomain(entity: Nothing): Category {
+    override fun fromEntityToDomain(entity: Unit): Category {
         throw IllegalArgumentException("Category has no entity class")
     }
 
