@@ -8,7 +8,7 @@ sealed class ItemRow(val itemType: ItemType) {
         val id: Int,
         val name: String,
         val description: String,
-        val imageUrl: String,
+        val imageUrl: String?,
         val price: String,
         val currency: String
     ) : ItemRow(ItemType.PRODUCT)

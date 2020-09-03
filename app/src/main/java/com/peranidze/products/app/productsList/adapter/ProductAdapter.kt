@@ -8,8 +8,9 @@ import com.peranidze.products.R
 import com.peranidze.products.app.productsList.adapter.ItemType.*
 import com.peranidze.products.databinding.ItemCategoryBinding
 import com.peranidze.products.databinding.ItemProductBinding
+import javax.inject.Inject
 
-class ProductAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ProductAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var items: List<ItemRow> = emptyList()
         set(value) {
@@ -48,7 +49,7 @@ class ProductAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemCount(): Int = items.size
 
-    public fun setOnProductItemClickListener(listener: (ItemRow.ProductItem) -> Unit) {
+    fun setOnProductItemClickListener(listener: (ItemRow.ProductItem) -> Unit) {
         onProductItemClickListener = listener
     }
 
@@ -71,7 +72,8 @@ class ProductAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
                 nameTv.text = item.name
                 descriptionTv.text = item.description
-                priceTv.text = "${item.price} ${item.currency}"
+                priceTv.text = item.price
+                currencyTv.text = item.currency
             }
             itemView.setOnClickListener {
                 onProductItemClickListener?.invoke(item)

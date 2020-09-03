@@ -1,16 +1,21 @@
 package com.peranidze.products
 
-import android.app.Application
 import coil.Coil
 import coil.ImageLoader
 import coil.util.DebugLogger
+import com.peranidze.products.di.DaggerAppComponent
+import dagger.android.AndroidInjector
+import dagger.android.DaggerApplication
 
-class ProductsApplication : Application() {
+class ProductsApplication : DaggerApplication() {
 
     override fun onCreate() {
         super.onCreate()
         initCoil()
     }
+
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> =
+        DaggerAppComponent.builder().application(this).build()
 
     private fun initCoil() {
         Coil.setImageLoader(
