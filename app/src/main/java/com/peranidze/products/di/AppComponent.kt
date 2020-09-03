@@ -4,6 +4,8 @@ import android.app.Application
 import com.peranidze.products.ProductsApplication
 import com.peranidze.products.di.module.ActivityBuildersModule
 import com.peranidze.products.di.module.ApplicationModule
+import com.peranidze.products.di.module.DatabaseModule
+import com.peranidze.products.di.module.RepositoryModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -15,7 +17,9 @@ import javax.inject.Singleton
     modules = [
         AndroidInjectionModule::class,
         ActivityBuildersModule::class,
-        ApplicationModule::class
+        ApplicationModule::class,
+        DatabaseModule::class,
+        RepositoryModule::class
     ]
 )
 interface AppComponent : AndroidInjector<ProductsApplication> {

@@ -6,7 +6,6 @@ import androidx.navigation.fragment.findNavController
 import com.peranidze.products.R
 import com.peranidze.products.app.productsList.adapter.ProductAdapter
 import com.peranidze.products.databinding.FragmentProductsListBinding
-import com.peranidze.products.remote.service.ConfigService
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -14,9 +13,6 @@ class ProductsListFragment : DaggerFragment(R.layout.fragment_products_list) {
 
     @Inject
     lateinit var productAdapter: ProductAdapter
-
-    @Inject
-    lateinit var service: ConfigService
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,14 +24,17 @@ class ProductsListFragment : DaggerFragment(R.layout.fragment_products_list) {
     private fun bindInteractions(binding: FragmentProductsListBinding) {
         binding.productsRv.adapter = productAdapter.apply {
             setOnProductItemClickListener {
-                navigateToProductDetail(it.id)
+                navigateToProductDetail(it.id, it.categoryId)
             }
         }
     }
 
-    private fun navigateToProductDetail(id: Int) {
+    private fun navigateToProductDetail(id: Long, categoryId: Long) {
         findNavController().navigate(
-            ProductsListFragmentDirections.actionProductsListFragmentToProductDetailFragment(id)
+            ProductsListFragmentDirections.actionProductsListFragmentToProductDetailFragment(
+                id,
+                categoryId
+            )
         )
     }
 }

@@ -5,7 +5,8 @@ sealed class ItemRow(val itemType: ItemType) {
     data class CategoryItem(val name: String) : ItemRow(ItemType.CATEGORY)
 
     data class ProductItem(
-        val id: Int,
+        val id: Long,
+        val categoryId: Long,
         val name: String,
         val description: String,
         val imageUrl: String?,
