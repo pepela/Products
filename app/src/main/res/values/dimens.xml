@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- General -->
     <dimen name="general_list_item_margin">16dp</dimen>
     <dimen name="general_list_vertical_padding">8dp</dimen>
+
+    <!-- Product list -->
     <dimen name="category_item_height">48dp</dimen>
     <dimen name="product_item_height">72dp</dimen>
-    <dimen name="product_image_size">40dp</dimen>
+    <dimen name="product_item_image_size">40dp</dimen>
+    <dimen name="product_item_price_margin">4dp</dimen>
+
+    <!-- Product detail -->
+    <dimen name="product_detail_image_height">250dp</dimen>
+    <dimen name="product_detail_margin">16dp</dimen>
+    <dimen name="product_detail_price_margin">4dp</dimen>
 </resources>

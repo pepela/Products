@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/category_item_height"
     android:gravity="center_vertical"
+    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
     android:maxLines="1"
     android:paddingHorizontal="@dimen/general_list_item_margin"
     tools:text="Food" />
