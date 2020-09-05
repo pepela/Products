@@ -3,9 +3,11 @@ package com.peranidze.products.app.productDetail
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import androidx.transition.TransitionInflater
 import coil.load
 import com.peranidze.products.R
 import com.peranidze.products.app.base.BaseFragment
@@ -27,10 +29,17 @@ class ProductDetailFragment : BaseFragment(R.layout.fragment_product_detail) {
         )
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition =
+            TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(FragmentProductDetailBinding.bind(view)) {
             observeState(this)
+            setSharedElementTransitionNames(this)
         }
     }
 
@@ -38,9 +47,6 @@ class ProductDetailFragment : BaseFragment(R.layout.fragment_product_detail) {
         with(binding) {
             viewModel.state.mapDistinct { it.isLoading }.observe(viewLifecycleOwner, {
                 loadingPb.isVisible = it
-            })
-            viewModel.state.mapDistinct { it.isError }.observe(viewLifecycleOwner, {
-
             })
             viewModel.state.mapDistinct { it.imageUrl }.observe(viewLifecycleOwner, {
                 imageIv.load(it) {
@@ -60,6 +66,16 @@ class ProductDetailFragment : BaseFragment(R.layout.fragment_product_detail) {
             viewModel.state.mapDistinct { it.currency }.observe(viewLifecycleOwner, {
                 currencyTv.text = it
             })
+        }
+    }
+
+    private fun setSharedElementTransitionNames(binding: FragmentProductDetailBinding) {
+        with(args.sharedElementId) {
+            ViewCompat.setTransitionName(binding.imageIv, "image_$this")
+            ViewCompat.setTransitionName(binding.nameTv, "name_$this")
+            ViewCompat.setTransitionName(binding.descriptionTv, "description_$this")
+            ViewCompat.setTransitionName(binding.priceTv, "price_$this")
+            ViewCompat.setTransitionName(binding.currencyTv, "currency_$this")
         }
     }
 }

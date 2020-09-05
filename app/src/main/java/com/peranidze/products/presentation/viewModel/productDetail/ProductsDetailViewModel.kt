@@ -23,8 +23,7 @@ class ProductsDetailViewModel @AssistedInject constructor(
     }
 
     data class State(
-        val isLoading: Boolean = true,
-        val isError: Boolean = false,
+        val isLoading: Boolean = false,
         val imageUrl: String? = null,
         val name: String? = null,
         val description: String? = null,
@@ -44,13 +43,30 @@ class ProductsDetailViewModel @AssistedInject constructor(
         repository.getProduct(productId, categoryId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { showLoading() }
             .subscribe(::getProductOnNext, ::getProductOnError)
             .addToDisposables()
     }
 
     private fun getProductOnNext(product: Product) {
         hideLoading()
-        hideError()
+        showProduct(product)
+    }
+
+    private fun getProductOnError(throwable: Throwable) {
+        hideLoading()
+        Log.e(TAG, "Error getting product", throwable)
+    }
+
+    private fun showLoading() {
+        changeState { it.copy(isLoading = true) }
+    }
+
+    private fun hideLoading() {
+        changeState { it.copy(isLoading = false) }
+    }
+
+    private fun showProduct(product: Product) {
         changeState {
             it.copy(
                 imageUrl = product.url.toFullUrl(),
@@ -60,24 +76,6 @@ class ProductsDetailViewModel @AssistedInject constructor(
                 currency = product.salePrice.currency
             )
         }
-    }
-
-    private fun getProductOnError(throwable: Throwable) {
-        hideLoading()
-        showError()
-        Log.e(TAG, "Error getting product", throwable)
-    }
-
-    private fun hideLoading() {
-        changeState { it.copy(isLoading = false) }
-    }
-
-    private fun showError() {
-        changeState { it.copy(isError = true) }
-    }
-
-    private fun hideError() {
-        changeState { it.copy(isError = false) }
     }
 
     private fun getProductId(): Long? = handle[ARG_PRODUCT_ID]

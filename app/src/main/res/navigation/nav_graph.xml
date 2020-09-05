@@ -25,5 +25,8 @@
         <argument
             android:name="categoryId"
             app:argType="long" />
+        <argument
+            android:name="sharedElementId"
+            app:argType="integer" />
     </fragment>
 </navigation>

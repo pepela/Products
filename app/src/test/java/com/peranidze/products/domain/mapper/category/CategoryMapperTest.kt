@@ -4,6 +4,7 @@ import com.nhaarman.mockito_kotlin.mock
 import com.peranidze.products.domain.mapper.product.ProductMapper
 import com.peranidze.products.factory.CategoryFactory.makeCategoryDto
 import com.peranidze.products.factory.CategoryFactory.makeCategoryModel
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class CategoryMapperTest {
@@ -17,7 +18,7 @@ class CategoryMapperTest {
         val categoryDto = makeCategoryDto()
         val category = categoryMapper.fromDtoToDomain(categoryDto)
 
-        assert(category.name == categoryDto.name)
+        assertTrue(category.name == categoryDto.name)
     }
 
     @Test(expected = IllegalArgumentException::class)

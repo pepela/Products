@@ -9,6 +9,7 @@
     <dimen name="product_item_height">72dp</dimen>
     <dimen name="product_item_image_size">40dp</dimen>
     <dimen name="product_item_price_margin">4dp</dimen>
+    <dimen name="product_list_error_margin">8dp</dimen>
 
     <!-- Product detail -->
     <dimen name="product_detail_image_height">250dp</dimen>

@@ -2,5 +2,8 @@
     <string name="app_name">Products</string>
 
     <string name="product_list_image">Product image</string>
+    <string name="products_list_error_fetching_products">Error fetching products</string>
+    <string name="products_list_retry">Retry</string>
+
     <string name="product_detail_image">Product image</string>
 </resources>

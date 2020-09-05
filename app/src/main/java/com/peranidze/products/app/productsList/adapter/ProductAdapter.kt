@@ -2,6 +2,9 @@ package com.peranidze.products.app.productsList.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.navigation.fragment.FragmentNavigator
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.peranidze.products.R
@@ -18,7 +21,8 @@ class ProductAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
             notifyDataSetChanged()
         }
 
-    private var onProductItemClickListener: ((ItemRow.ProductItem) -> Unit)? = null
+    private var onProductItemClickListener: ((ItemRow.ProductItem, FragmentNavigator.Extras) -> Unit)? =
+        null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when (values()[viewType]) {
@@ -49,11 +53,11 @@ class ProductAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
 
     override fun getItemCount(): Int = items.size
 
-    fun setOnProductItemClickListener(listener: (ItemRow.ProductItem) -> Unit) {
+    fun setOnProductItemClickListener(listener: (ItemRow.ProductItem, FragmentNavigator.Extras) -> Unit) {
         onProductItemClickListener = listener
     }
 
-    inner class CategoryViewHolder(private val binding: ItemCategoryBinding) :
+    class CategoryViewHolder(private val binding: ItemCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: ItemRow.CategoryItem) {
@@ -76,7 +80,30 @@ class ProductAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
                 currencyTv.text = item.currency
             }
             itemView.setOnClickListener {
-                onProductItemClickListener?.invoke(item)
+                val fragmentNavigatorExtras = createFragmentNavigatorExtras(item)
+                setTransitionName(item)
+                onProductItemClickListener?.invoke(item, fragmentNavigatorExtras)
+            }
+        }
+
+        private fun createFragmentNavigatorExtras(item: ItemRow.ProductItem) =
+            with(item.getSharedElementId()) {
+                FragmentNavigatorExtras(
+                    binding.imageIv to "image_$this",
+                    binding.nameTv to "name_$this",
+                    binding.descriptionTv to "description_$this",
+                    binding.priceTv to "price_$this",
+                    binding.currencyTv to "currency_$this"
+                )
+            }
+
+        private fun setTransitionName(item: ItemRow.ProductItem) {
+            with(item.getSharedElementId()) {
+                ViewCompat.setTransitionName(binding.imageIv, "image_$this")
+                ViewCompat.setTransitionName(binding.nameTv, "name_$this")
+                ViewCompat.setTransitionName(binding.descriptionTv, "description_$this")
+                ViewCompat.setTransitionName(binding.priceTv, "price_$this")
+                ViewCompat.setTransitionName(binding.currencyTv, "currency_$this")
             }
         }
     }

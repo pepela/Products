@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.textview.MaterialTextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/name_tv"
     android:layout_width="match_parent"
     android:layout_height="@dimen/category_item_height"
     android:gravity="center_vertical"
-    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
     android:maxLines="1"
     android:paddingHorizontal="@dimen/general_list_item_margin"
+    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
     tools:text="Food" />

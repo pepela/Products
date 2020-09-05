@@ -12,6 +12,7 @@ import com.peranidze.products.databinding.FragmentProductsListBinding
 import com.peranidze.products.domain.Repository
 import com.peranidze.products.presentation.EventObserver
 import com.peranidze.products.presentation.extension.mapDistinct
+import com.peranidze.products.presentation.route.ProductListToProductDetailsRoute
 import com.peranidze.products.presentation.viewModel.productsList.ProductsListViewModel
 import com.peranidze.products.presentation.withFactory
 import javax.inject.Inject
@@ -38,10 +39,13 @@ class ProductsListFragment : BaseFragment(R.layout.fragment_products_list) {
     }
 
     private fun bindInteractions(binding: FragmentProductsListBinding) {
-        binding.productsRv.adapter = productAdapter.apply {
-            setOnProductItemClickListener {
-                viewModel.onProductItemClicked(it.id, it.categoryId)
+        with(binding) {
+            productsRv.adapter = productAdapter.apply {
+                setOnProductItemClickListener { productItem, fragmentNavigatorExtras ->
+                    viewModel.onProductItemClicked(productItem, fragmentNavigatorExtras)
+                }
             }
+            retryBtn.setOnClickListener { viewModel.onRetryClicked() }
         }
     }
 
@@ -50,8 +54,8 @@ class ProductsListFragment : BaseFragment(R.layout.fragment_products_list) {
             viewModel.state.mapDistinct { it.isLoading }.observe(viewLifecycleOwner, {
                 loadingPb.isVisible = it
             })
-            viewModel.state.mapDistinct { it.isLoading }.observe(viewLifecycleOwner, {
-
+            viewModel.state.mapDistinct { it.isError }.observe(viewLifecycleOwner, {
+                errorGroup.isVisible = it
             })
             viewModel.state.mapDistinct { it.listItems }.observe(viewLifecycleOwner, {
                 productAdapter.items = it
@@ -61,16 +65,18 @@ class ProductsListFragment : BaseFragment(R.layout.fragment_products_list) {
 
     private fun observeEvents() {
         viewModel.navigationToDetailEvent.observe(viewLifecycleOwner, EventObserver {
-            navigateToProductDetail(it.first, it.second)
+            navigateToProductDetail(it)
         })
     }
 
-    private fun navigateToProductDetail(id: Long, categoryId: Long) {
+    private fun navigateToProductDetail(route: ProductListToProductDetailsRoute) {
         findNavController().navigate(
             ProductsListFragmentDirections.actionProductsListFragmentToProductDetailFragment(
-                id,
-                categoryId
-            )
+                route.productId,
+                route.categoryId,
+                route.sharedElementId
+            ),
+            route.fragmentNavigatorExtras
         )
     }
 }

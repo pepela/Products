@@ -4,13 +4,14 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.fragment.FragmentNavigator
 import com.peranidze.products.app.productsList.adapter.ItemRow
 import com.peranidze.products.domain.Repository
 import com.peranidze.products.domain.model.Category
-import com.peranidze.products.domain.model.Product
-import com.peranidze.products.extension.toFullUrl
 import com.peranidze.products.presentation.Event
 import com.peranidze.products.presentation.ViewModelAssistedFactory
+import com.peranidze.products.presentation.mapper.ItemRowMapper
+import com.peranidze.products.presentation.route.ProductListToProductDetailsRoute
 import com.peranidze.products.presentation.viewModel.BaseViewModel
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
@@ -19,6 +20,7 @@ import io.reactivex.schedulers.Schedulers
 
 class ProductsListViewModel @AssistedInject constructor(
     private val repository: Repository,
+    private val itemRowMapper: ItemRowMapper,
     @Assisted private val handle: SavedStateHandle
 ) : BaseViewModel<ProductsListViewModel.State>(State()) {
 
@@ -28,27 +30,45 @@ class ProductsListViewModel @AssistedInject constructor(
     }
 
     data class State(
-        val isLoading: Boolean = true,
+        val isLoading: Boolean = false,
         val isError: Boolean = false,
         val listItems: List<ItemRow> = emptyList()
     )
 
-    private val _navigationToDetailEvent = MutableLiveData<Event<Pair<Long, Long>>>()
-    val navigationToDetailEvent: LiveData<Event<Pair<Long, Long>>>
+    private val _navigationToDetailEvent =
+        MutableLiveData<Event<ProductListToProductDetailsRoute>>()
+    val navigationToDetailEvent: LiveData<Event<ProductListToProductDetailsRoute>>
         get() = _navigationToDetailEvent
 
     init {
         fetchCategories()
     }
 
-    fun onProductItemClicked(id: Long, categoryId: Long) {
-        _navigationToDetailEvent.postValue(Event(id to categoryId))
+    fun onProductItemClicked(
+        productItem: ItemRow.ProductItem,
+        fragmentNavigatorExtras: FragmentNavigator.Extras
+    ) {
+        val route = ProductListToProductDetailsRoute(
+            productItem.id,
+            productItem.categoryId,
+            productItem.getSharedElementId(),
+            fragmentNavigatorExtras
+        )
+        _navigationToDetailEvent.postValue(Event(route))
+    }
+
+    fun onRetryClicked() {
+        fetchCategories()
     }
 
     private fun fetchCategories() {
         repository.getCategories()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                showLoading()
+                hideError()
+            }
             .subscribe(::fetchCategoriesOnNext, ::fetchCategoriesOnError)
             .addToDisposables()
     }
@@ -56,7 +76,7 @@ class ProductsListViewModel @AssistedInject constructor(
     private fun fetchCategoriesOnNext(categoriesList: List<Category>) {
         hideLoading()
         hideError()
-        changeState { it.copy(listItems = mapToItemRows(categoriesList)) }
+        showItems(itemRowMapper.mapToItemRowsList(categoriesList))
     }
 
     private fun fetchCategoriesOnError(throwable: Throwable) {
@@ -65,29 +85,9 @@ class ProductsListViewModel @AssistedInject constructor(
         Log.e(TAG, "Error fetching categories", throwable)
     }
 
-    private fun mapToItemRows(categoriesList: List<Category>): List<ItemRow> =
-        with(mutableListOf<ItemRow>()) {
-            categoriesList.forEach { category ->
-                add(mapToCategoryItem(category))
-                addAll(category.productsList.map { product -> mapToProductItem(product) })
-            }
-            this
-        }
-
-    private fun mapToCategoryItem(category: Category): ItemRow = ItemRow.CategoryItem(category.name)
-
-    private fun mapToProductItem(product: Product): ItemRow =
-        with(product) {
-            ItemRow.ProductItem(
-                id,
-                categoryId,
-                name,
-                description.orEmpty(),
-                url.toFullUrl(),
-                salePrice.amount.toString(),
-                salePrice.currency
-            )
-        }
+    private fun showLoading() {
+        changeState { it.copy(isLoading = true) }
+    }
 
     private fun hideLoading() {
         changeState { it.copy(isLoading = false) }
@@ -99,6 +99,10 @@ class ProductsListViewModel @AssistedInject constructor(
 
     private fun hideError() {
         changeState { it.copy(isError = false) }
+    }
+
+    private fun showItems(listItems: List<ItemRow>) {
+        changeState { it.copy(listItems = listItems) }
     }
 
     companion object {

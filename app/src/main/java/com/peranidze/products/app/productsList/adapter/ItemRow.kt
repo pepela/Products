@@ -8,9 +8,11 @@ sealed class ItemRow(val itemType: ItemType) {
         val id: Long,
         val categoryId: Long,
         val name: String,
-        val description: String,
-        val imageUrl: String?,
+        val description: String?,
+        val imageUrl: String,
         val price: String,
         val currency: String
     ) : ItemRow(ItemType.PRODUCT)
+
+    fun getSharedElementId() = hashCode()
 }

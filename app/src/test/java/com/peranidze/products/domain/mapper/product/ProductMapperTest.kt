@@ -3,6 +3,7 @@ package com.peranidze.products.domain.mapper.product
 import com.peranidze.products.factory.ProductFactory.makeProductDto
 import com.peranidze.products.factory.ProductFactory.makeProductEntity
 import com.peranidze.products.factory.ProductFactory.makeProductModel
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class ProductMapperTest {
@@ -14,13 +15,13 @@ class ProductMapperTest {
         val productDto = makeProductDto()
         val product = productMapper.fromDtoToDomain(productDto)
 
-        assert(productDto.id == product.id)
-        assert(productDto.categoryId == product.categoryId)
-        assert(productDto.name == product.name)
-        assert(productDto.description == product.description)
-        assert(productDto.url == product.url)
-        assert(productDto.salePriceDto.amount == product.salePrice.amount)
-        assert(productDto.salePriceDto.currency == product.salePrice.currency)
+        assertTrue(productDto.id == product.id)
+        assertTrue(productDto.categoryId == product.categoryId)
+        assertTrue(productDto.name == product.name)
+        assertTrue(productDto.description == product.description)
+        assertTrue(productDto.url == product.url)
+        assertTrue(productDto.salePriceDto.amount == product.salePrice.amount)
+        assertTrue(productDto.salePriceDto.currency == product.salePrice.currency)
     }
 
     @Test
@@ -28,14 +29,14 @@ class ProductMapperTest {
         val productModel = makeProductModel()
         val productEntity = productMapper.fromDomainToEntity(productModel)
 
-        assert(null == productEntity.id)
-        assert(productModel.id == productEntity.productId)
-        assert(productModel.categoryId == productEntity.categoryId)
-        assert(productModel.name == productEntity.name)
-        assert(productModel.description == productEntity.description)
-        assert(productModel.url == productEntity.imageUrl)
-        assert(productModel.salePrice.amount == productEntity.price)
-        assert(productModel.salePrice.currency == productEntity.currency)
+        assertTrue(null == productEntity.id)
+        assertTrue(productModel.id == productEntity.productId)
+        assertTrue(productModel.categoryId == productEntity.categoryId)
+        assertTrue(productModel.name == productEntity.name)
+        assertTrue(productModel.description == productEntity.description)
+        assertTrue(productModel.url == productEntity.imageUrl)
+        assertTrue(productModel.salePrice.amount == productEntity.price)
+        assertTrue(productModel.salePrice.currency == productEntity.currency)
     }
 
     @Test
@@ -43,12 +44,12 @@ class ProductMapperTest {
         val productEntity = makeProductEntity()
         val product = productMapper.fromEntityToDomain(productEntity)
 
-        assert(product.id == productEntity.productId)
-        assert(product.categoryId == productEntity.categoryId)
-        assert(product.name == productEntity.name)
-        assert(product.description == productEntity.description)
-        assert(product.url == productEntity.imageUrl)
-        assert(product.salePrice.amount == productEntity.price)
-        assert(product.salePrice.currency == productEntity.currency)
+        assertTrue(product.id == productEntity.productId)
+        assertTrue(product.categoryId == productEntity.categoryId)
+        assertTrue(product.name == productEntity.name)
+        assertTrue(product.description == productEntity.description)
+        assertTrue(product.url == productEntity.imageUrl)
+        assertTrue(product.salePrice.amount == productEntity.price)
+        assertTrue(product.salePrice.currency == productEntity.currency)
     }
 }
