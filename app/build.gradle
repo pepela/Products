@@ -39,65 +39,82 @@ android {
 }
 
 dependencies {
+    def androidx_core_version = "1.3.1"
+    def androidx_appcompat_version = "1.2.0"
+    def recycler_view_version = "1.1.0"
+    def constraint_layout_version = "2.0.1"
+    def material_version = "1.2.1"
+    def retrofit_version = "2.9.0"
+    def logging_interceptor_version = "4.4.0"
+    def moshi_version = "1.10.0"
+    def moshi_kotlin_version = "1.9.3"
+    def dagger_version = "2.28.3"
+    def assisted_inject_version = "0.5.2"
+    def room_version = "2.2.5"
+    def lifecycle_version = "2.2.0"
+    def coil_version = "0.12.0"
+    def rxjava_version = "2.2.16"
+    def rxandroid_version = "2.1.1"
+    def mockito_core_version = "3.3.0"
+    def mockito_android_version = "2.21.0"
+    def mockito_kotlin_version = "1.6.0"
+    def arch_core_version = "2.1.0"
+    def junit_version = "4.13"
+    def android_junit_version = "1.1.2"
+
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    implementation "androidx.core:core-ktx:1.3.1"
-    implementation "androidx.appcompat:appcompat:1.2.0"
-    implementation "androidx.recyclerview:recyclerview:1.1.0"
-    implementation "androidx.constraintlayout:constraintlayout:2.0.1"
+    implementation "androidx.core:core-ktx:$androidx_core_version"
+    implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
+    implementation "androidx.recyclerview:recyclerview:$recycler_view_version"
+    implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
 
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
-    implementation "com.google.android.material:material:1.2.1"
+    implementation "com.google.android.material:material:$material_version"
 
-    implementation "io.coil-kt:coil:0.12.0"
+    implementation "io.coil-kt:coil:$coil_version"
 
-    implementation "io.reactivex.rxjava2:rxjava:2.2.16"
-    implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
 
-    implementation "com.squareup.retrofit2:retrofit:2.9.0"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:2.9.0"
-    implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
 
-    implementation "com.squareup.okhttp3:logging-interceptor:4.4.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:$logging_interceptor_version"
 
-    implementation "com.squareup.moshi:moshi:1.10.0"
-    implementation "com.squareup.moshi:moshi-kotlin:1.9.3"
+    implementation "com.squareup.moshi:moshi:$moshi_version"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi_kotlin_version"
 
-    implementation "com.google.dagger:dagger:2.28.3"
-    implementation "com.google.dagger:dagger-android:2.28.3"
-    implementation "com.google.dagger:dagger-android-support:2.28.3"
-    kapt "com.google.dagger:dagger-android-processor:2.28.3"
-    kapt "com.google.dagger:dagger-compiler:2.28.3"
+    implementation "com.google.dagger:dagger:$dagger_version"
+    implementation "com.google.dagger:dagger-android:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
 
-    compileOnly "com.squareup.inject:assisted-inject-annotations-dagger2:0.5.2"
-    kapt "com.squareup.inject:assisted-inject-processor-dagger2:0.5.2"
+    compileOnly "com.squareup.inject:assisted-inject-annotations-dagger2:$assisted_inject_version"
+    kapt "com.squareup.inject:assisted-inject-processor-dagger2:$assisted_inject_version"
 
-    implementation "androidx.room:room-runtime:2.2.5"
-    implementation "androidx.room:room-ktx:2.2.5"
-    implementation "androidx.room:room-rxjava2:2.2.5"
-    implementation "androidx.room:room-testing:2.2.5"
-    kapt "androidx.room:room-compiler:2.2.5"
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
+    implementation "androidx.room:room-testing:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.2.0"
-    implementation "androidx.lifecycle:lifecycle-common-java8:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
-    testImplementation "junit:junit:4.13"
-    testImplementation "com.nhaarman:mockito-kotlin:1.6.0"
-    testImplementation 'org.mockito:mockito-core:3.3.0'
-    testImplementation "androidx.arch.core:core-testing:2.1.0"
-    androidTestImplementation "org.mockito:mockito-android:2.21.0"
-    androidTestImplementation "com.nhaarman:mockito-kotlin:1.6.0"
-    androidTestImplementation "androidx.test.ext:junit:1.1.2"
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
-    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
-    androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
-
-    debugImplementation("androidx.fragment:fragment-testing:1.2.5") {
-        exclude group: 'androidx.test', module: 'monitor'
-    }
+    testImplementation "junit:junit:$junit_version"
+    testImplementation "com.nhaarman:mockito-kotlin:$mockito_kotlin_version"
+    testImplementation "org.mockito:mockito-core:$mockito_core_version"
+    testImplementation "androidx.arch.core:core-testing:$arch_core_version"
+    androidTestImplementation "org.mockito:mockito-android:$mockito_android_version"
+    androidTestImplementation "com.nhaarman:mockito-kotlin:$mockito_kotlin_version"
+    androidTestImplementation "androidx.test.ext:junit:$android_junit_version"
+    androidTestImplementation "androidx.arch.core:core-testing:$arch_core_version"
 }
