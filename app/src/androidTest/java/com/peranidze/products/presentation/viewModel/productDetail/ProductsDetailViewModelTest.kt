@@ -11,6 +11,7 @@ import com.peranidze.products.domain.model.SalePrice
 import com.peranidze.products.extension.toFullUrl
 import com.peranidze.products.presentation.viewModel.productDetail.ProductsDetailViewModel.Companion.ARG_CATEGORY_ID
 import com.peranidze.products.presentation.viewModel.productDetail.ProductsDetailViewModel.Companion.ARG_PRODUCT_ID
+import com.peranidze.products.rule.RxSchedulerRule
 import io.reactivex.Flowable
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -21,6 +22,9 @@ class ProductsDetailViewModelTest {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
+    @get:Rule
+    val rxSchedulerRule = RxSchedulerRule()
+
     private val repository: Repository = mock()
 
     private val savedStateHandle = SavedStateHandle(ARGS_MAPS)
@@ -28,7 +32,7 @@ class ProductsDetailViewModelTest {
     private lateinit var productsDetailViewModel: ProductsDetailViewModel
 
     @Test
-    fun initCallsRepositoryWithSuccessAndShowsDetails() {
+    fun init_calls_repository_with_success_and_shows_details() {
         whenever(repository.getProduct(PRODUCT_ID, CATEGORY_ID)).thenReturn(Flowable.just(PRODUCT))
         productsDetailViewModel = ProductsDetailViewModel(repository, savedStateHandle)
 
@@ -45,7 +49,7 @@ class ProductsDetailViewModelTest {
     }
 
     @Test
-    fun initCallsRepositoryWithErrorAndNeverShows() {
+    fun init_calls_repository_with_error_and_never_shows_details() {
         whenever(repository.getProduct(PRODUCT_ID, CATEGORY_ID))
             .thenReturn(Flowable.error(RuntimeException("mock_error")))
         productsDetailViewModel = ProductsDetailViewModel(repository, savedStateHandle)

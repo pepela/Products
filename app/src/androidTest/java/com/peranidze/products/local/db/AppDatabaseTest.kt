@@ -40,7 +40,7 @@ class AppDatabaseTest {
 
     @Test
     @Throws(Exception::class)
-    fun writeProductAndReadIt() {
+    fun write_product_and_read_it() {
         productsDao.insertAll(listOf(PRODUCT_1, PRODUCT_2)).blockingAwait()
 
         val testObserver = productsDao.get(PRODUCT_ID_1, CATEGORY_ID_1).test()
@@ -51,7 +51,7 @@ class AppDatabaseTest {
 
     @Test
     @Throws(Exception::class)
-    fun writeProductAndReadOtherIt() {
+    fun write_product_and_read_other() {
         productsDao.insertAll(listOf(PRODUCT_1)).blockingAwait()
 
         val testObserver = productsDao.get(PRODUCT_ID_2, CATEGORY_ID_2).test()

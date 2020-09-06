@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.peranidze.products.R
 import com.peranidze.products.app.base.BaseFragment
 import com.peranidze.products.app.productsList.adapter.ProductAdapter
@@ -40,12 +41,24 @@ class ProductsListFragment : BaseFragment(R.layout.fragment_products_list) {
 
     private fun bindInteractions(binding: FragmentProductsListBinding) {
         with(binding) {
-            productsRv.adapter = productAdapter.apply {
+            setupRecyclerView(productsRv)
+            retryBtn.setOnClickListener { viewModel.onRetryClicked() }
+        }
+    }
+
+    private fun setupRecyclerView(recyclerView: RecyclerView) {
+        recyclerView.apply {
+            adapter = productAdapter.apply {
                 setOnProductItemClickListener { productItem, fragmentNavigatorExtras ->
                     viewModel.onProductItemClicked(productItem, fragmentNavigatorExtras)
                 }
             }
-            retryBtn.setOnClickListener { viewModel.onRetryClicked() }
+
+            postponeEnterTransition()
+            viewTreeObserver.addOnPreDrawListener {
+                startPostponedEnterTransition()
+                true
+            }
         }
     }
 

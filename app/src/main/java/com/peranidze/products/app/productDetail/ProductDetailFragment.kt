@@ -49,10 +49,7 @@ class ProductDetailFragment : BaseFragment(R.layout.fragment_product_detail) {
                 loadingPb.isVisible = it
             })
             viewModel.state.mapDistinct { it.imageUrl }.observe(viewLifecycleOwner, {
-                imageIv.load(it) {
-                    placeholder(R.drawable.ic_photo)
-                    error(R.drawable.ic_broken_image)
-                }
+                imageIv.load(it) { error(R.drawable.ic_broken_image) }
             })
             viewModel.state.mapDistinct { it.name }.observe(viewLifecycleOwner, {
                 nameTv.text = it

@@ -2,7 +2,6 @@ package com.peranidze.products
 
 import coil.Coil
 import coil.ImageLoader
-import coil.util.DebugLogger
 import com.peranidze.products.di.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
@@ -18,10 +17,6 @@ class ProductsApplication : DaggerApplication() {
         DaggerAppComponent.builder().application(this).build()
 
     private fun initCoil() {
-        Coil.setImageLoader(
-            ImageLoader.Builder(applicationContext)
-                .logger(DebugLogger())
-                .build()
-        )
+        Coil.setImageLoader(ImageLoader.Builder(applicationContext).build())
     }
 }

@@ -1,6 +1,7 @@
 package com.peranidze.products.presentation.viewModel.productsList
 
 import android.util.Log
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -41,7 +42,13 @@ class ProductsListViewModel @AssistedInject constructor(
         get() = _navigationToDetailEvent
 
     init {
-        fetchCategories()
+        if (isResponseInSavedState()) {
+            getResponseFromSavedState()?.let {
+                showItems(it)
+            }
+        } else {
+            fetchCategories()
+        }
     }
 
     fun onProductItemClicked(
@@ -76,7 +83,10 @@ class ProductsListViewModel @AssistedInject constructor(
     private fun fetchCategoriesOnNext(categoriesList: List<Category>) {
         hideLoading()
         hideError()
-        showItems(itemRowMapper.mapToItemRowsList(categoriesList))
+        with(itemRowMapper.mapToItemRowsList(categoriesList)) {
+            saveResponseInSavedState(this)
+            showItems(this)
+        }
     }
 
     private fun fetchCategoriesOnError(throwable: Throwable) {
@@ -105,7 +115,17 @@ class ProductsListViewModel @AssistedInject constructor(
         changeState { it.copy(listItems = listItems) }
     }
 
+    private fun saveResponseInSavedState(itemRows: List<ItemRow>) {
+        handle[ARG_RESPONSE] = itemRows
+    }
+
+    private fun isResponseInSavedState() = handle.contains(ARG_RESPONSE)
+
+    private fun getResponseFromSavedState(): List<ItemRow>? = handle[ARG_RESPONSE]
+
     companion object {
+        @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+        const val ARG_RESPONSE = "arg_response"
         private val TAG = ProductsListViewModel::class.java.simpleName
     }
 }

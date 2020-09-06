@@ -30,8 +30,10 @@ open class ItemRowMapper @Inject constructor() {
                 name,
                 description,
                 url.toFullUrl(),
-                salePrice.amount.toString(),
+                formatAmount(salePrice.amount),
                 salePrice.currency
             )
         }
+
+    private fun formatAmount(amount: Double) = amount.toString()
 }

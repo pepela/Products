@@ -81,9 +81,9 @@ class ProductAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
             }
             itemView.setOnClickListener {
                 val fragmentNavigatorExtras = createFragmentNavigatorExtras(item)
-                setTransitionName(item)
                 onProductItemClickListener?.invoke(item, fragmentNavigatorExtras)
             }
+            setTransitionNames(item)
         }
 
         private fun createFragmentNavigatorExtras(item: ItemRow.ProductItem) =
@@ -97,7 +97,7 @@ class ProductAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.V
                 )
             }
 
-        private fun setTransitionName(item: ItemRow.ProductItem) {
+        private fun setTransitionNames(item: ItemRow.ProductItem) {
             with(item.getSharedElementId()) {
                 ViewCompat.setTransitionName(binding.imageIv, "image_$this")
                 ViewCompat.setTransitionName(binding.nameTv, "name_$this")

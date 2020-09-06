@@ -72,11 +72,13 @@ class ProductsDetailViewModel @AssistedInject constructor(
                 imageUrl = product.url.toFullUrl(),
                 name = product.name,
                 description = product.description,
-                price = product.salePrice.amount.toString(),
+                price = formatAmount(product.salePrice.amount),
                 currency = product.salePrice.currency
             )
         }
     }
+
+    private fun formatAmount(amount: Double) = amount.toString()
 
     private fun getProductId(): Long? = handle[ARG_PRODUCT_ID]
 
